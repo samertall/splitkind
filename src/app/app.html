@@ -22,7 +22,7 @@
           <p class="hero-subtitle">Dinner, road trips, shared rent, or that one friend who always pays. Track expenses and settle up without the awkward conversation.</p>
           <div class="hero-actions">
             <button class="btn btn-primary" (click)="startFresh()">Start a free group <span aria-hidden="true">↗</span></button>
-            <button class="btn btn-light" (click)="scrollToWorkspace()">Try the live demo <span aria-hidden="true">→</span></button>
+            <button class="btn btn-light" (click)="loadDemo()">Try the live demo <span aria-hidden="true">→</span></button>
           </div>
           <div class="hero-benefits">
             <span><b aria-hidden="true">✓</b> No sign-up</span>
@@ -185,7 +185,7 @@
         <form (ngSubmit)="addExpense()">
           <label class="form-label" for="expense-title">What was it for?</label><input id="expense-title" class="form-control" name="title" [(ngModel)]="expenseTitle" maxlength="100" placeholder="e.g. Dinner with friends" required autofocus>
           <div class="form-two">
-            <div><label class="form-label" for="expense-amount">Amount ({{ group().currency }})</label><input id="expense-amount" class="form-control" name="amount" type="number" min="0.01" step="any" [(ngModel)]="expenseAmount" placeholder="0.00" required></div>
+            <div><label class="form-label" for="expense-amount">Amount ({{ group().currency }})</label><input id="expense-amount" class="form-control" name="amount" type="number" [min]="group().currency === 'JOD' ? 0.001 : 0.01" step="any" [(ngModel)]="expenseAmount" placeholder="0.00" required></div>
             <div><label class="form-label" for="payer">Paid by</label><select id="payer" class="form-control" name="payer" [(ngModel)]="expensePayer">@for (person of group().members; track person.id) { <option [value]="person.id">{{ person.name }}</option> }</select></div>
           </div>
           <label class="form-label" for="category">Category</label><select class="form-control" id="category" name="category" [(ngModel)]="expenseCategory">@for (cat of categories; track cat.id) { <option [value]="cat.id">{{ cat.icon }} {{ cat.label }}</option> }</select>

@@ -2,6 +2,10 @@
 
 **Good times. Fair splits.** A privacy-first Angular app for splitting real-life group expenses with no account, no ads, and no awkward math.
 
+![SplitKind interface screenshot](docs/screenshot.jpg)
+
+**[Launch SplitKind](https://splitkind-samer-2026.usefulotter1.chatgpt.site)** · [Built by Samer Tallauze](https://samertall.com)
+
 > Dinner with friends? A weekend trip? Sharing rent or utilities? Add your people, log what everyone paid for, and instantly see the simplest practical way to settle.
 
 ## What it does
