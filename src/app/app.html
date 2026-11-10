@@ -1,0 +1,216 @@
+<div class="site-shell">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="SplitKind home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>splitkind<span class="brand-dot">.</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#why-splitkind">Why SplitKind</a>
+      </nav>
+      <button class="header-cta" (click)="scrollToWorkspace()">Open the app <span aria-hidden="true">↗</span></button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow-pill"><span class="pulse-dot"></span> LESS MATH. MORE MEMORIES.</div>
+          <h1>Good times.<br>Fair <em>splits.</em><span class="hero-spark" aria-hidden="true">✳</span></h1>
+          <p class="hero-subtitle">Dinner, road trips, shared rent, or that one friend who always pays. Track expenses and settle up without the awkward conversation.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" (click)="startFresh()">Start a free group <span aria-hidden="true">↗</span></button>
+            <button class="btn btn-light" (click)="scrollToWorkspace()">Try the live demo <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="hero-benefits">
+            <span><b aria-hidden="true">✓</b> No sign-up</span>
+            <span><b aria-hidden="true">✓</b> No ads</span>
+            <span><b aria-hidden="true">✓</b> Works on your phone</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of group expenses and a settlement">
+          <div class="doodle doodle-star">✳</div>
+          <div class="doodle doodle-circle"></div>
+          <div class="float-pill float-pill-top"><span class="float-emoji">🎉</span> Weekend sorted!</div>
+          <div class="preview-card">
+            <div class="preview-topline"><div><span class="preview-tiny">YOUR GROUP</span><h3>Weekend getaway <span>✳</span></h3></div><span class="preview-menu">•••</span></div>
+            <div class="preview-avatars">
+              <span style="background:#d8e9fd">A</span>
+              <span style="background:#ffe4d6">J</span>
+              <span style="background:#e4e0fb">M</span>
+              <span style="background:#d6f2e3">T</span>
+              <small>4 lovely people</small>
+            </div>
+            <div class="preview-divider"></div>
+            <div class="preview-mini-title">RECENT EXPENSES <span>See all →</span></div>
+            <div class="preview-expense"><span class="preview-icon peach">⌂</span><span class="preview-expense-name"><strong>Cozy cabin</strong><small>Paid by Alex</small></span><b>$240.00</b></div>
+            <div class="preview-expense"><span class="preview-icon lavender">☕</span><span class="preview-expense-name"><strong>Groceries</strong><small>Paid by Jamie</small></span><b>$82.40</b></div>
+            <div class="preview-expense"><span class="preview-icon mint">↗</span><span class="preview-expense-name"><strong>Road trip fuel</strong><small>Paid by Morgan</small></span><b>$56.00</b></div>
+            <div class="preview-bottom"><span>Everything, fairly split.</span><span class="mini-check">✓</span></div>
+          </div>
+          <div class="float-pill float-pill-bottom"><span class="settle-icon">↗</span><span><strong>All calculated</strong><small>No spreadsheet needed</small></span></div>
+          <div class="doodle doodle-loop" aria-hidden="true">↝</div>
+        </div>
+      </div>
+      <div class="container hero-strip"><span>ONE LINK. ZERO AWKWARDNESS.</span><span class="strip-line"></span><span>Built for real life, not accountants.</span></div>
+    </section>
+
+    <section id="workspace" class="workspace-section">
+      <div class="container">
+        <div class="section-kicker"><span class="kicker-line"></span> THE ACTUAL APP</div>
+        <div class="section-intro">
+          <div><h2>Meet your new group tab<span class="headline-period">.</span></h2><p>Go ahead, tap around. This is a working app, not just a pretty screenshot.</p></div>
+          <span class="section-stamp">✳ YOUR MONEY, YOUR RULES</span>
+        </div>
+
+        <div class="app-frame">
+          <aside class="app-sidebar">
+            <div class="sidebar-caption">YOUR SPACE <span>✦</span></div>
+            <label class="field-label" for="group-name">Group name</label>
+            <input id="group-name" class="group-name-input" type="text" maxlength="70" [ngModel]="group().name" (ngModelChange)="renameGroup($event)" aria-label="Group name">
+            <div class="sidebar-note">The little details that make this yours.</div>
+            <div class="sidebar-rule"></div>
+            <div class="sidebar-row-title"><span>PEOPLE <span class="count-pill">{{ group().members.length }}</span></span><button class="small-add" (click)="openMember()" aria-label="Add person">＋</button></div>
+            <div class="member-list">
+              @for (person of group().members; track person.id) {
+                <div class="member-line">
+                  <span class="avatar" [style.background]="person.color">{{ initials(person.name) }}</span>
+                  <span class="member-name">{{ person.name }}</span>
+                  <button class="remove-member" (click)="removeMember(person.id)" [attr.aria-label]="'Remove ' + person.name" title="Remove person if they have no expenses">×</button>
+                </div>
+              }
+            </div>
+            <button class="sidebar-add-link" (click)="openMember()"><span>＋</span> Add someone</button>
+            <div class="sidebar-rule"></div>
+            <label class="field-label" for="currency">GROUP CURRENCY</label>
+            <select id="currency" class="currency-select" [ngModel]="group().currency" (ngModelChange)="changeCurrency($event)" [disabled]="group().expenses.length > 0" title="Currency is locked once expenses are added">
+              @for (currency of currencies; track currency) { <option [value]="currency">{{ currency }}</option> }
+            </select>
+            @if (group().expenses.length) { <p class="field-hint">Currency is locked once expenses exist.</p> }
+            <div class="sidebar-bottom">
+              <span class="privacy-icon">♧</span>
+              <div><strong>Private by design</strong><p>Saved on this device. No accounts, no tracking, no cloud database.</p></div>
+            </div>
+          </aside>
+
+          <div class="app-main">
+            <div class="dashboard-heading">
+              <div><div class="dashboard-overline"><span class="live-dot"></span> GROUP OVERVIEW @if (isDemo()) { <span class="demo-tag">DEMO DATA</span> }</div><h3>{{ group().name || 'Your shared tab' }}</h3><p>Everyone's on the same page. Literally.</p></div>
+              <button class="btn btn-dark add-top" (click)="openExpense()"><span>＋</span> Add expense</button>
+            </div>
+            <div class="summary-cards">
+              <div class="summary-card summary-primary"><span>TOTAL SPENT <span aria-hidden="true">↗</span></span><strong>{{ money(total()) }}</strong><small>Across your whole group</small></div>
+              <div class="summary-card"><span>YOUR CREW <span aria-hidden="true">✳</span></span><strong>{{ group().members.length }} <small>people</small></strong><small>Sharing the good stuff</small></div>
+              <div class="summary-card"><span>EXPENSES <span aria-hidden="true">◈</span></span><strong>{{ group().expenses.length }} <small>items</small></strong><small>Every little thing counts</small></div>
+            </div>
+
+            <div class="dashboard-toolbar">
+              <div class="app-tabs" role="tablist" aria-label="Group details">
+                <button role="tab" [attr.aria-selected]="tab() === 'expenses'" [class.active]="tab() === 'expenses'" (click)="tab.set('expenses')">Expenses <span>{{ group().expenses.length }}</span></button>
+                <button role="tab" [attr.aria-selected]="tab() === 'balances'" [class.active]="tab() === 'balances'" (click)="tab.set('balances')">Settle up <span>{{ settlements().length }}</span></button>
+              </div>
+              <div class="toolbar-actions">
+                <button (click)="exportCsv()" title="Download expenses as CSV" aria-label="Export CSV">↓ <span>Export</span></button>
+                <button (click)="openShare()" title="Share a snapshot of this group" aria-label="Share group link">↗ <span>Share</span></button>
+              </div>
+            </div>
+
+            @if (tab() === 'expenses') {
+              <div class="expense-area" role="tabpanel">
+                @if (latestExpenses().length) {
+                  @for (expense of latestExpenses(); track expense.id) {
+                    <div class="expense-item">
+                      <div class="expense-category" [class]="'expense-category cat-' + expense.category">{{ category(expense.category).icon }}</div>
+                      <div class="expense-details"><strong>{{ expense.title }}</strong><span>{{ member(expense.paidBy)?.name }} paid · {{ dateLabel(expense.date) }} · split {{ expense.splitWith.length }} ways</span></div>
+                      <div class="expense-right"><strong>{{ money(expense.amount) }}</strong><button class="expense-remove" (click)="removeExpense(expense.id)" [attr.aria-label]="'Remove ' + expense.title" title="Remove expense">×</button></div>
+                    </div>
+                  }
+                } @else {
+                  <div class="empty-state"><span class="empty-graphic">✳</span><h4>A clean slate. We love that.</h4><p>Add the first expense and we'll take care of the splits.</p><button class="btn btn-dark" (click)="openExpense()">＋ Add your first expense</button></div>
+                }
+                @if (latestExpenses().length) { <button class="add-expense-bottom" (click)="openExpense()">＋ Add another expense <span>↗</span></button> }
+              </div>
+            } @else {
+              <div class="balance-area" role="tabpanel">
+                <div class="balances-heading"><div><h4>Here's where everyone stands.</h4><p>Positive balance = money to receive. Negative = money to send.</p></div><span class="balance-check">✓</span></div>
+                <div class="balance-grid">
+                  @for (balance of balances(); track balance.member.id) {
+                    <div class="balance-person"><span class="avatar" [style.background]="balance.member.color">{{ initials(balance.member.name) }}</span><span class="balance-person-name">{{ balance.member.name }}</span><span class="balance-value" [class.negative]="balance.amount < 0" [class.neutral]="balance.amount === 0">{{ balance.amount > 0 ? '+' : '' }}{{ money(balance.amount) }}</span></div>
+                  }
+                </div>
+                <div class="settlement-heading"><span>THE SIMPLEST WAY TO SETTLE</span><span>✳</span></div>
+                @if (settlements().length) {
+                  @for (settlement of settlements(); track settlement.from.id + settlement.to.id) {
+                    <div class="settlement-line">
+                      <div class="settlement-people"><span class="avatar small" [style.background]="settlement.from.color">{{ initials(settlement.from.name) }}</span><strong>{{ settlement.from.name }}</strong><span class="transfer-arrow">→</span><span class="avatar small" [style.background]="settlement.to.color">{{ initials(settlement.to.name) }}</span><strong>{{ settlement.to.name }}</strong></div>
+                      <b>{{ money(settlement.amount) }}</b>
+                    </div>
+                  }
+                } @else { <div class="all-settled"><span>✓</span><strong>You're all square!</strong><p>No payments needed. Time to plan the next one.</p></div> }
+                <button class="btn btn-primary settle-share" (click)="shareSummary()">↗ Share settlement summary</button>
+              </div>
+            }
+            <div class="app-footbar"><span>✳ Made to keep friendships uncomplicated.</span><button (click)="startFresh()">Start a new group ↗</button></div>
+          </div>
+        </div>
+        <div class="under-app-note"><span>🔒</span> Your group stays in your browser until you explicitly share a snapshot. Shared links are not live-sync collaboration.</div>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="how-section">
+      <div class="container">
+        <div class="section-kicker"><span class="kicker-line"></span> EASY AS ONE, TWO, THREE</div>
+        <div class="how-header"><h2>Less “you owe me.”<br>More <em>“we're good.”</em></h2><p>Three steps. Zero spreadsheets. A little less tension in your group chat.</p></div>
+        <div class="steps-grid">
+          <article class="step-card step-one"><span class="step-number">01 /</span><div class="step-illustration"><span class="person-bubble one">A</span><span class="person-bubble two">J</span><span class="person-bubble three">M</span><span class="illustration-plus">＋</span></div><h3>Bring your people</h3><p>Start a group and add your friends, flatmates, family, or travel crew.</p></article>
+          <article class="step-card step-two"><span class="step-number">02 /</span><div class="step-illustration"><span class="receipt-illustration"><span>✳ &nbsp; Dinner</span><strong>$ 68.00</strong><i></i><i></i></span></div><h3>Add what you spent</h3><p>Log who paid and who shared each expense. We handle the exact splits.</p></article>
+          <article class="step-card step-three"><span class="step-number">03 /</span><div class="step-illustration"><span class="settle-illustration">A <span>→</span> J <b>✓</b></span></div><h3>Settle & get on with life</h3><p>See the fewest practical payments, then copy or share the summary.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="why-splitkind" class="last-section"><div class="container last-inner"><div><span class="last-kicker">SMALL TOOL. BIG PEACE OF MIND.</span><h2>Money is complicated.<br><em>Friendship shouldn't be.</em></h2><p>Made for the moments you'd rather remember than calculate.</p></div><button class="btn btn-cream" (click)="startFresh()">Make a group <span>↗</span></button><span class="last-decoration" aria-hidden="true">✳</span></div></section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="#top"><span class="brand-mark"><span></span><span></span><span></span></span><span>splitkind<span class="brand-dot">.</span></span></a><p>A little more kindness in every split.</p><span>Designed & built by <a href="https://samertall.com" target="_blank" rel="noopener noreferrer">Samer Tallauze ↗</a></span></div></footer>
+</div>
+
+@if (modal()) {
+  <div class="modal-scrim" (click)="modal.set(null)">
+    <section class="modal-panel" role="dialog" aria-modal="true" [attr.aria-label]="modal() === 'expense' ? 'Add an expense' : modal() === 'member' ? 'Add a person' : 'Share group'" (click)="$event.stopPropagation()">
+      <button class="modal-close" aria-label="Close dialog" (click)="modal.set(null)">×</button>
+      @if (modal() === 'expense') {
+        <div class="modal-kicker">LET'S KEEP IT FAIR ✳</div><h2>Add an expense<span>.</span></h2><p class="modal-intro">Who paid, who shared, and what for?</p>
+        <form (ngSubmit)="addExpense()">
+          <label class="form-label" for="expense-title">What was it for?</label><input id="expense-title" class="form-control" name="title" [(ngModel)]="expenseTitle" maxlength="100" placeholder="e.g. Dinner with friends" required autofocus>
+          <div class="form-two">
+            <div><label class="form-label" for="expense-amount">Amount ({{ group().currency }})</label><input id="expense-amount" class="form-control" name="amount" type="number" min="0.01" step="any" [(ngModel)]="expenseAmount" placeholder="0.00" required></div>
+            <div><label class="form-label" for="payer">Paid by</label><select id="payer" class="form-control" name="payer" [(ngModel)]="expensePayer">@for (person of group().members; track person.id) { <option [value]="person.id">{{ person.name }}</option> }</select></div>
+          </div>
+          <label class="form-label" for="category">Category</label><select class="form-control" id="category" name="category" [(ngModel)]="expenseCategory">@for (cat of categories; track cat.id) { <option [value]="cat.id">{{ cat.icon }} {{ cat.label }}</option> }</select>
+          <div class="form-label split-label">Split equally between <span>{{ selectedMembers.size }} selected</span></div>
+          <div class="participant-list">
+            @for (person of group().members; track person.id) {
+              <label class="participant"><input type="checkbox" [checked]="selectedMembers.has(person.id)" (change)="toggleParticipant(person.id, $any($event.target).checked)"><span class="avatar small" [style.background]="person.color">{{ initials(person.name) }}</span><span>{{ person.name }}</span></label>
+            }
+          </div>
+          @if (formError) { <div class="form-error" role="alert">{{ formError }}</div> }
+          <button class="btn btn-primary modal-submit" type="submit">Add expense <span>↗</span></button>
+        </form>
+      } @else if (modal() === 'member') {
+        <div class="modal-kicker">MORE THE MERRIER ✳</div><h2>Bring someone in<span>.</span></h2><p class="modal-intro">They don't need an account. Just a name.</p>
+        <form (ngSubmit)="addMember()"><label class="form-label" for="member-input">Person's name</label><input id="member-input" class="form-control" name="member" [(ngModel)]="newMember" maxlength="40" placeholder="e.g. Jordan" required autofocus>
+          @if (formError) { <div class="form-error" role="alert">{{ formError }}</div> }
+          <button class="btn btn-primary modal-submit" type="submit">Add to the crew <span>↗</span></button>
+        </form>
+      } @else {
+        <div class="modal-kicker">PASS IT ALONG ✳</div><h2>Share your group<span>.</span></h2><p class="modal-intro">Send this snapshot so everyone can see the same numbers.</p>
+        <div class="share-link-wrap"><input class="form-control" [value]="shareUrl" readonly aria-label="Group snapshot URL"><button class="btn btn-dark" (click)="copyLink()">Copy link ↗</button></div>
+        <div class="share-warning"><span>ⓘ</span><p>This is a snapshot, not a live shared workspace. The link contains group names and amounts. Anyone with the link can read them, so share thoughtfully.</p></div>
+        <button class="share-summary-link" (click)="shareSummary()">Or share just the settlement summary ↗</button>
+      }
+    </section>
+  </div>
+}
+@if (toast()) { <div class="toast" role="status"><span>✳</span> {{ toast() }}</div> }
