@@ -4,7 +4,7 @@
 
 ![SplitKind interface screenshot](docs/screenshot.jpg)
 
-**[Launch SplitKind](https://splitkind-samer-2026.usefulotter1.chatgpt.site)** · [Built by Samer Tallauze](https://samertall.com)
+**[Launch SplitKind — public demo](https://splitkind.vercel.app)** · [Built by Samer Tallauze](https://samertall.com)
 
 > Dinner with friends? A weekend trip? Sharing rent or utilities? Add your people, log what everyone paid for, and instantly see the simplest practical way to settle.
 
