@@ -16,7 +16,7 @@ const CURRENCIES: Currency[] = ['USD', 'JOD', 'EUR', 'GBP', 'INR'];
 const CATEGORIES: { id: Category; label: string; icon: string }[] = [
   { id: 'food', label: 'Food & drinks', icon: '☕' },
   { id: 'stay', label: 'Stay', icon: '⌂' },
-  { id: 'transport', label: 'Transport', icon: '↗' },
+  { id: 'transport', label: 'Transport', icon: '→' },
   { id: 'fun', label: 'Fun', icon: '✦' },
   { id: 'other', label: 'Other', icon: '◈' },
 ];
